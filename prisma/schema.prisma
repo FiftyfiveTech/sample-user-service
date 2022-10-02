@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ********************* ENUMS *********************
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+// ******************** TYPE ************************
+
+type Avatar {
+  key String
+  url String
+}
+
+// ********************* MODELS *********************
+
+model Address {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  city              String
+  country           String
+  countryCode2Alpha String
+  postalCode        String?
+
+  user User[]
+
+  @@map("addresses")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  firstName String
+  lastName  String
+  gender    Gender
+  password  String
+  avatar    Avatar?
+  role      Role     @default(MANAGER)
+  addressId String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //Relations
+  address Address? @relation(fields: [addressId], references: [id], onDelete: Cascade)
+
+  //Database name
+  @@map("users")
+}
+
+model UserCredentials {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  password String
+  email    String
+  userId   String
+
+  //Database name
+  @@map("userCredentials")
+}

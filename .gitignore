@@ -1,0 +1,15 @@
+node_modules
+dist
+logs
+generated
+src/@types/nexus-typegen
+src/@types/nexus-prisma
+graphdoc
+data.sqlite
+prisma/Studio
+*.env*
+!*.example.env
+.DS_Store
+src/.DS_Store
+package-lock.json
+*.graphql
