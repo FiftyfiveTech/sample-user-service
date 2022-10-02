@@ -13,3 +13,4 @@ prisma/Studio
 src/.DS_Store
 package-lock.json
 *.graphql
+.vscode
